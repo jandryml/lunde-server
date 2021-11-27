@@ -16,7 +16,7 @@ class GlobalExceptionHandler {
         @ExceptionHandler(MethodArgumentNotValidException::class)
         fun customValidationErrorHanding(exception: MethodArgumentNotValidException): ResponseEntity<*> {
             val errorDetails = ResponseDto(
-                exception.bindingResult.fieldError!!.defaultMessage!!
+                exception.bindingResult.allErrors.map{it.defaultMessage ?: ""}.joinToString("; ") { it }
             )
             return ResponseEntity<Any>(errorDetails, HttpStatus.BAD_REQUEST)
         }
