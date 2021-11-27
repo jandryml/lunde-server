@@ -1,5 +1,6 @@
 package cz.lunde.server.model
 
+import cz.lunde.server.dto.RequestTypeDto
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -11,4 +12,6 @@ data class RequestType(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = -1,
     var name: String = ""
-)
+){
+    fun toDto() = RequestTypeDto(id, name)
+}
