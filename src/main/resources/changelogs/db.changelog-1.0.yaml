@@ -1,0 +1,63 @@
+databaseChangeLog:
+  #<editor-fold desc="changeset 1 - init DDL changeset">
+  - changeSet:
+      id: 1
+      author: drymlj
+      comment: ddl 1 - init DDL changeset
+      changes:
+        - createTable:
+            tableName: request
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: request_pkey
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: policy_number
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: surname
+                  type: VARCHAR(255)
+              - column:
+                  name: request_data
+                  type: VARCHAR(5000)
+              - column:
+                  name: request_type_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: request_type
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: request_type_pkey
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+
+        - addForeignKeyConstraint:
+            baseColumnNames: request_type_id
+            baseTableName: request
+            constraintName: fk_request_request_type
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: request_type
+            validate: true
