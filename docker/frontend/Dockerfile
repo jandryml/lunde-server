@@ -1,0 +1,1 @@
+FROM drymljan/lunde-client:latest

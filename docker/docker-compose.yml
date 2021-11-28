@@ -1,0 +1,50 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: '3.7'
+services:
+  backend:
+    build: backend/
+    image: drymljan/lunde-server:latest
+    depends_on:
+      - db
+    volumes:
+      - type: bind
+        source: ./backend/config/application.properties
+        target: /opt/app/application.properties
+    ports:
+      - '8080:8080'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      
+  frontend:
+    build: frontend/
+    image: drymljan/lunde-client:latest
+    volumes:
+      - type: bind
+        source: ./frontend/config/.env
+        target: /opt/app/.env
+    ports:
+      - '3000:3000'
+
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_DB: lunde
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+# Volumes
+volumes:
+  db-data:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  backend:
+  frontend:
